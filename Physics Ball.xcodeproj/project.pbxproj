@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C4615B32229B5BDB00789625 /* CustomButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4615B31229B5BDB00789625 /* CustomButtons.swift */; };
+		C4615B34229B933900789625 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4615B33229B933900789625 /* Utilities.swift */; };
 		C49FF9EC229B48F6008A6AA3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49FF9EB229B48F6008A6AA3 /* AppDelegate.swift */; };
 		C49FF9EE229B48F6008A6AA3 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = C49FF9ED229B48F6008A6AA3 /* art.scnassets */; };
 		C49FF9F0229B48F6008A6AA3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49FF9EF229B48F6008A6AA3 /* ViewController.swift */; };
@@ -16,6 +18,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C4615B31229B5BDB00789625 /* CustomButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButtons.swift; sourceTree = "<group>"; };
+		C4615B33229B933900789625 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		C49FF9E8229B48F6008A6AA3 /* Physics Ball.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Physics Ball.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C49FF9EB229B48F6008A6AA3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C49FF9ED229B48F6008A6AA3 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -40,6 +44,7 @@
 		C49FF9DF229B48F6008A6AA3 = {
 			isa = PBXGroup;
 			children = (
+				C4615B33229B933900789625 /* Utilities.swift */,
 				C49FF9EA229B48F6008A6AA3 /* Physics Ball */,
 				C49FF9E9229B48F6008A6AA3 /* Products */,
 			);
@@ -60,6 +65,7 @@
 				C49FF9ED229B48F6008A6AA3 /* art.scnassets */,
 				C49FF9EF229B48F6008A6AA3 /* ViewController.swift */,
 				C49FF9F1229B48F6008A6AA3 /* Main.storyboard */,
+				C4615B31229B5BDB00789625 /* CustomButtons.swift */,
 				C49FF9F4229B48F7008A6AA3 /* Assets.xcassets */,
 				C49FF9F6229B48F7008A6AA3 /* LaunchScreen.storyboard */,
 				C49FF9F9229B48F7008A6AA3 /* Info.plist */,
@@ -140,6 +146,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C49FF9F0229B48F6008A6AA3 /* ViewController.swift in Sources */,
+				C4615B32229B5BDB00789625 /* CustomButtons.swift in Sources */,
+				C4615B34229B933900789625 /* Utilities.swift in Sources */,
 				C49FF9EC229B48F6008A6AA3 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
