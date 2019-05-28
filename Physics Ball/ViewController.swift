@@ -62,35 +62,51 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         //
         let cameraPosition = SCNVector3Make(cameraLocation.x + cameraOrientation.x, cameraLocation.y + cameraOrientation.y, cameraLocation.z + cameraOrientation.z)
         
-        let ball = SCNSphere(radius: 0.15)
+        let ball = SCNSphere(radius: 0.12)
         let material = SCNMaterial()
         material.diffuse.contents = UIImage(named: "basketballSkin.png")
         ball.materials = [material]
         
         let ballNode = SCNNode(geometry: ball)
         ballNode.position = cameraPosition
+        ballNode.eulerAngles = SCNVector3Make(0, 0, -.pi * 0.5)
         sceneView.scene.rootNode.addChildNode(ballNode)
         
         // Physics
         let physicsShape = SCNPhysicsShape(node: ballNode, options: nil)
         let physicsBody = SCNPhysicsBody(type: .dynamic, shape: physicsShape)
+        physicsBody.mass = 0.6237
+        physicsBody.restitution = 0.55
+        physicsBody.allowsResting = false
         
         ballNode.physicsBody = physicsBody
         
-        let forceVector:Float = 8
+        let forceVector:Float = 7
         ballNode.physicsBody?.applyForce(SCNVector3(x: cameraOrientation.x * forceVector, y: cameraOrientation.y * forceVector, z: cameraOrientation.z * forceVector), asImpulse: true)
+        
+//        ballNode.physicsBody?.applyTorque(SCNVector4(1, 0, 0, 1), asImpulse: true)
     }
     
     func addBackboard() {
-        guard let backboardScene = SCNScene(named: "art.scnassets/hoop.scn") else {
+        guard let backboardScene = SCNScene(named: "art.scnassets/BasketballHoop_Prototype.dae") else {
             return
         }
         
-        guard let backboardNode = backboardScene.rootNode.childNode(withName: "backboard", recursively: false) else {
+        guard let backboardNode = backboardScene.rootNode.childNode(withName: "NBA_Hoop", recursively: false) else {
             return
         }
         
-        backboardNode.position = SCNVector3(x: 0, y: 0.5, z: -3)
+        guard let innerBackboardNode = backboardNode.childNode(withName: "BackBoard_Glass", recursively: true) else {
+            return
+        }
+        
+        let backboardNodeSize = innerBackboardNode.boundingBox
+        let size = SCNVector3(x: backboardNodeSize.max.x - backboardNodeSize.min.x, y: backboardNodeSize.max.y - backboardNodeSize.min.y, z: backboardNodeSize.max.z - backboardNodeSize.min.z)
+        let scale = 1.828 / size.z
+        print(size)
+        
+        backboardNode.position = SCNVector3(x: 0, y: 0.5, z: -4.3)
+        backboardNode.scale = SCNVector3(scale, scale, scale)
         
         // Physics
         let physicsShape = SCNPhysicsShape(node: backboardNode, options: [SCNPhysicsShape.Option.type: SCNPhysicsShape.ShapeType.concavePolyhedron])
