@@ -9,10 +9,29 @@
 import Foundation
 import SceneKit
 
-class Basketball: SCNNode {
+public protocol BasketballDelegate : NSObjectProtocol {
+    func didScore(withBall ball: Basketball)
+}
+
+public class Basketball: SCNNode {
     
+    weak var delegate: BasketballDelegate?
+    var enterScorePosition: SCNVector3
     
-    init(position: SCNVector3, orientation: SCNVector3) {
+    private(set) var hasScored: Bool = false {
+        didSet{
+            guard let delegate = self.delegate else {
+                return
+            }
+            
+            if oldValue != hasScored && hasScored == true {
+                delegate.didScore(withBall: self)
+            }
+        }
+    }
+    
+    init(position: SCNVector3, orientation: SCNVector3, enterScorePosition: SCNVector3) {
+        self.enterScorePosition = enterScorePosition
         super.init()
         
         let ball = SCNSphere(radius: 0.12)
@@ -26,7 +45,7 @@ class Basketball: SCNNode {
         ballNode.eulerAngles = SCNVector3Make(0, 0, -.pi * 0.5)
         
         // Physics
-        let physicsShape = SCNPhysicsShape(node: ballNode, options: nil)
+        let physicsShape = SCNPhysicsShape(node: ballNode, options: [SCNPhysicsShape.Option.scale: 0.8])
         let physicsBody = SCNPhysicsBody(type: .dynamic, shape: physicsShape)
         physicsBody.mass = 0.6237
         physicsBody.restitution = 0.55
@@ -46,8 +65,23 @@ class Basketball: SCNNode {
         // Backspin
         ballNode.physicsBody?.applyTorque(SCNVector4(0.5, 0, 0, 0.3), asImpulse: true)
         
+        ballNode.name = "ball"
+        
         self.addChildNode(ballNode)
         
+    }
+    
+    func didEnterHoop(atPosition position: SCNVector3) {
+        enterScorePosition = position
+        print("enterScorePosition:", enterScorePosition)
+    }
+    
+    func didExitHoop(atPosition exitScorePosition: SCNVector3, withDifferenceRequirement scoreNodeHeight: Float) {
+        print("exitScorePosition:", exitScorePosition)
+        print("scoreNodeHeight detected by ball:", scoreNodeHeight)
+        if (exitScorePosition.y < enterScorePosition.y - scoreNodeHeight) {
+            self.hasScored = true
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {

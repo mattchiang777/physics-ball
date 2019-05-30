@@ -12,12 +12,14 @@ import ARKit
 
 
 
-class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDelegate {
+class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDelegate, BasketballDelegate {
+    
 
     @IBOutlet var sceneView: ARSCNView!
     @IBOutlet weak var addHoopBtn: UIButton!
     
     var backboard: SCNNode!
+    var score: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +29,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         
         // Show statistics such as fps and timing information
 //        sceneView.showsStatistics = true
+        sceneView.debugOptions = .showPhysicsShapes
         
         // Create a new scene
         let scene = SCNScene()
@@ -64,8 +67,16 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         let cameraOrientation = SCNVector3(x: -cameraTransform.m31, y: -cameraTransform.m32, z: -cameraTransform.m33)
         let cameraPosition = SCNVector3Make(cameraLocation.x + cameraOrientation.x, cameraLocation.y + cameraOrientation.y, cameraLocation.z + cameraOrientation.z)
         
-        let ballNode = Basketball(position: cameraPosition, orientation: cameraOrientation)
-        sceneView.scene.rootNode.addChildNode(ballNode)
+        let basketballNode = self.createBasketball(withPosition: cameraPosition, andOrientation: cameraOrientation)
+        
+        sceneView.scene.rootNode.addChildNode(basketballNode)
+    }
+    
+    func createBasketball(withPosition position: SCNVector3, andOrientation orientation: SCNVector3) -> Basketball{
+        let baskeball = Basketball(position: position, orientation: orientation, enterScorePosition: SCNVector3(0, 0, 0))
+        baskeball.delegate = self
+        
+        return baskeball
     }
     
     func addBackboard() {
@@ -144,6 +155,38 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     
     
     func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
-        print(contact.nodeA.categoryBitMask, contact.nodeB.categoryBitMask)
+        if (contact.nodeA.physicsBody?.contactTestBitMask == contact.nodeB.physicsBody?.categoryBitMask || contact.nodeB.physicsBody?.contactTestBitMask == contact.nodeA.physicsBody?.categoryBitMask) {
+            
+            if (contact.nodeB.name == "ball") {
+                (contact.nodeB.parent as! Basketball).didEnterHoop(atPosition: contact.contactPoint) // why contact.nodeB.parent and not contact.nodeB?
+            }
+            
+//            print(contact.nodeA.name, contact.nodeB.name)
+//            score += 1
+//            print(score)
+        }
+        
+        // print(contact.nodeA.physicsBody?.categoryBitMask, contact.nodeB.physicsBody?.categoryBitMask)
     }
+    
+    func physicsWorld(_ world: SCNPhysicsWorld, didEnd contact: SCNPhysicsContact) {
+        if (contact.nodeA.physicsBody?.contactTestBitMask == contact.nodeB.physicsBody?.categoryBitMask || contact.nodeB.physicsBody?.contactTestBitMask == contact.nodeA.physicsBody?.categoryBitMask) {
+            
+            if (contact.nodeB.name == "ball") {
+//                let scoreNode = backboard.childNode(withName: "scoreNode", recursively: true)
+//                let scoreNodeHeight = (scoreNode?.boundingBox.max.y)! - (scoreNode?.boundingBox.min.y)!
+//                guard let scale = scoreNode?.physicsBody?.physicsShape?.options?[SCNPhysicsShape.Option.scale] else {
+//                    return
+//                }
+//                print()
+                (contact.nodeB.parent as! Basketball).didExitHoop(atPosition: contact.contactPoint, withDifferenceRequirement: 0.1)
+            }
+        }
+    }
+    
+    func didScore(withBall ball: Basketball) {
+        print("SCORE!!!!!")
+    }
+    
+    
 }

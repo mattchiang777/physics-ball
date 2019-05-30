@@ -31,14 +31,13 @@ class Hoop: SCNNode {
         let backboardNodeSize = innerBackboardNode.boundingBox
         let size = SCNVector3(x: backboardNodeSize.max.x - backboardNodeSize.min.x, y: backboardNodeSize.max.y - backboardNodeSize.min.y, z: backboardNodeSize.max.z - backboardNodeSize.min.z)
         let scale = 1.828 / size.z
-//        print(size)
         
-        backboardNode.position = SCNVector3(x: 0, y: 0.5, z: -4.3)
+        backboardNode.position = SCNVector3(x: 0, y: 0.5, z: -3)
         backboardNode.scale = SCNVector3(scale, scale, scale)
         
         // Physics
         let physicsShape = SCNPhysicsShape(node: backboardNode, options: [SCNPhysicsShape.Option.type: SCNPhysicsShape.ShapeType.concavePolyhedron])
-        let physicsBody = SCNPhysicsBody(type: .static, shape: physicsShape)
+        let physicsBody = SCNPhysicsBody(type: .kinematic, shape: physicsShape)
         
         physicsBody.categoryBitMask = CollisionCategory.hoop.rawValue
         physicsBody.contactTestBitMask = CollisionCategory.none.rawValue
@@ -47,38 +46,33 @@ class Hoop: SCNNode {
         backboardNode.physicsBody = physicsBody
         
         
-        // Cylinder for contact inside the rim
+        // Set up the score node
         // Get the rim
         guard let rimNode = backboardNode.childNode(withName: "Rim", recursively: true) else {
             return
         }
-        print(rimNode)
-        // Get the rim position
-//        let rimPosition = rimNode.position
-        // Place cylinder at rim position
         
+        let radius = CGFloat(rimNode.boundingBox.max.z - rimNode.boundingBox.min.z) * 0.25
         
-        
-//        let radius = CGFloat(rimNode.boundingBoxSize.z * 0.5)
-        
-        let radius = CGFloat(rimNode.boundingBox.max.z - rimNode.boundingBox.min.z) * 0.5
-        
+        // Set up score node geometry
         let cylinderGeometry = SCNCylinder(radius: radius, height: radius * 0.2)
         cylinderGeometry.firstMaterial?.diffuse.contents = UIColor.blue
-        let cylinderNode = SCNNode(geometry: cylinderGeometry)
+        let scoreNode = SCNNode(geometry: cylinderGeometry)
+        print("scoreNode height:", radius * 0.2)
         
-        let cylinderPhysicsBody = SCNPhysicsBody(type: .static, shape: physicsShape)
+        // Set up score node physics
+        let cylinderPhysicsShape = SCNPhysicsShape(geometry: cylinderGeometry, options:[SCNPhysicsShape.Option.scale: scale])
+        let cylinderPhysicsBody = SCNPhysicsBody(type: .static, shape: cylinderPhysicsShape)
         
         cylinderPhysicsBody.categoryBitMask = CollisionCategory.score.rawValue
-        cylinderPhysicsBody.contactTestBitMask = CollisionCategory.ball.rawValue
+//        cylinderPhysicsBody.contactTestBitMask = CollisionCategory.ball.rawValue
         cylinderPhysicsBody.collisionBitMask = CollisionCategory.none.rawValue
         
-        cylinderNode.physicsBody = cylinderPhysicsBody
+        scoreNode.physicsBody = cylinderPhysicsBody
         
+        scoreNode.name = "scoreNode"
         
-        rimNode.addChildNode(cylinderNode)
-        
-        
+        rimNode.addChildNode(scoreNode)
         self.addChildNode(backboardNode)
         
     }
