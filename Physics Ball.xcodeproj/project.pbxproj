@@ -15,6 +15,11 @@
 		C49FF9F3229B48F6008A6AA3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C49FF9F1229B48F6008A6AA3 /* Main.storyboard */; };
 		C49FF9F5229B48F7008A6AA3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C49FF9F4229B48F7008A6AA3 /* Assets.xcassets */; };
 		C49FF9F8229B48F7008A6AA3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C49FF9F6229B48F7008A6AA3 /* LaunchScreen.storyboard */; };
+		D2BD6BE2229F2806007CB9EB /* Basketball.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BD6BE1229F2806007CB9EB /* Basketball.swift */; };
+		D2BD6BE4229F2B7F007CB9EB /* Hoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BD6BE3229F2B7F007CB9EB /* Hoop.swift */; };
+		D2BD6BE8229F2CC9007CB9EB /* GameModes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BD6BE7229F2CC9007CB9EB /* GameModes.swift */; };
+		D2BD6BEB229F37E0007CB9EB /* CollisionCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BD6BEA229F37E0007CB9EB /* CollisionCategory.swift */; };
+		D2BD6BEE229F4690007CB9EB /* SCNNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BD6BED229F4690007CB9EB /* SCNNode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +33,11 @@
 		C49FF9F4229B48F7008A6AA3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C49FF9F7229B48F7008A6AA3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C49FF9F9229B48F7008A6AA3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D2BD6BE1229F2806007CB9EB /* Basketball.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Basketball.swift; sourceTree = "<group>"; };
+		D2BD6BE3229F2B7F007CB9EB /* Hoop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hoop.swift; sourceTree = "<group>"; };
+		D2BD6BE7229F2CC9007CB9EB /* GameModes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModes.swift; sourceTree = "<group>"; };
+		D2BD6BEA229F37E0007CB9EB /* CollisionCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollisionCategory.swift; sourceTree = "<group>"; };
+		D2BD6BED229F4690007CB9EB /* SCNNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCNNode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,9 +71,14 @@
 		C49FF9EA229B48F6008A6AA3 /* Physics Ball */ = {
 			isa = PBXGroup;
 			children = (
+				D2BD6BEC229F4682007CB9EB /* Extensions */,
+				D2BD6BE9229F37C7007CB9EB /* Constants */,
 				C49FF9EB229B48F6008A6AA3 /* AppDelegate.swift */,
 				C49FF9ED229B48F6008A6AA3 /* art.scnassets */,
 				C49FF9EF229B48F6008A6AA3 /* ViewController.swift */,
+				D2BD6BE7229F2CC9007CB9EB /* GameModes.swift */,
+				D2BD6BE1229F2806007CB9EB /* Basketball.swift */,
+				D2BD6BE3229F2B7F007CB9EB /* Hoop.swift */,
 				C49FF9F1229B48F6008A6AA3 /* Main.storyboard */,
 				C4615B31229B5BDB00789625 /* CustomButtons.swift */,
 				C49FF9F4229B48F7008A6AA3 /* Assets.xcassets */,
@@ -71,6 +86,22 @@
 				C49FF9F9229B48F7008A6AA3 /* Info.plist */,
 			);
 			path = "Physics Ball";
+			sourceTree = "<group>";
+		};
+		D2BD6BE9229F37C7007CB9EB /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				D2BD6BEA229F37E0007CB9EB /* CollisionCategory.swift */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		D2BD6BEC229F4682007CB9EB /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				D2BD6BED229F4690007CB9EB /* SCNNode.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -145,10 +176,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2BD6BE2229F2806007CB9EB /* Basketball.swift in Sources */,
 				C49FF9F0229B48F6008A6AA3 /* ViewController.swift in Sources */,
 				C4615B32229B5BDB00789625 /* CustomButtons.swift in Sources */,
 				C4615B34229B933900789625 /* Utilities.swift in Sources */,
+				D2BD6BEE229F4690007CB9EB /* SCNNode.swift in Sources */,
+				D2BD6BE8229F2CC9007CB9EB /* GameModes.swift in Sources */,
+				D2BD6BEB229F37E0007CB9EB /* CollisionCategory.swift in Sources */,
 				C49FF9EC229B48F6008A6AA3 /* AppDelegate.swift in Sources */,
+				D2BD6BE4229F2B7F007CB9EB /* Hoop.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
