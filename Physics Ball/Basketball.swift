@@ -16,10 +16,22 @@ public protocol BasketballDelegate : NSObjectProtocol {
 public class Basketball: SCNNode {
     
     weak var delegate: BasketballDelegate?
-    var enterScorePosition: SCNVector3
+    
+    private(set) var hitOrderArray: [ScoreNode] = [] {
+        didSet {
+            // check against the correct order. if it's wrong, they cheated. if it's right, set hasScored
+            if (hitOrderArray.count == 2) {
+                if (hitOrderArray.first?.name == "firstScoreNode" && hitOrderArray.last?.name == "secondScoreNode") {
+                    self.hasScored = true
+                } else {
+                    print("cheated by throwing upwards")
+                }
+            }
+        }
+    }
     
     private(set) var hasScored: Bool = false {
-        didSet{
+        didSet {
             guard let delegate = self.delegate else {
                 return
             }
@@ -31,7 +43,7 @@ public class Basketball: SCNNode {
     }
     
     init(position: SCNVector3, orientation: SCNVector3, enterScorePosition: SCNVector3) {
-        self.enterScorePosition = enterScorePosition
+//        self.enterScorePosition = enterScorePosition
         super.init()
         
         let ball = SCNSphere(radius: 0.12)
@@ -41,6 +53,7 @@ public class Basketball: SCNNode {
         ball.materials = [material]
         
         let ballNode = SCNNode(geometry: ball)
+        ballNode.name = "ball"
         ballNode.position = position
         ballNode.eulerAngles = SCNVector3Make(0, 0, -.pi * 0.5)
         
@@ -65,25 +78,18 @@ public class Basketball: SCNNode {
         // Backspin
         ballNode.physicsBody?.applyTorque(SCNVector4(0.5, 0, 0, 0.3), asImpulse: true)
         
-        ballNode.name = "ball"
-        
         self.addChildNode(ballNode)
         
     }
     
-    func didEnterHoop(atPosition position: SCNVector3) {
-        enterScorePosition = position
-        print("enterScorePosition:", enterScorePosition)
-    }
-    
-    func didExitHoop(atPosition exitScorePosition: SCNVector3, withDifferenceRequirement scoreNodeHeight: Float) {
-        print("exitScorePosition:", exitScorePosition)
-        print("scoreNodeHeight detected by ball:", scoreNodeHeight)
-        if (exitScorePosition.y < enterScorePosition.y - scoreNodeHeight) {
-            self.hasScored = true
+    func didHitScoreNode(node: ScoreNode) {
+        
+        // push the score node into the array if it doesn't have it yet
+        if (!self.hitOrderArray.contains(node)) {
+            self.hitOrderArray.append(node)
         }
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

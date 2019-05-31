@@ -20,6 +20,7 @@
 		D2BD6BE8229F2CC9007CB9EB /* GameModes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BD6BE7229F2CC9007CB9EB /* GameModes.swift */; };
 		D2BD6BEB229F37E0007CB9EB /* CollisionCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BD6BEA229F37E0007CB9EB /* CollisionCategory.swift */; };
 		D2BD6BEE229F4690007CB9EB /* SCNNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BD6BED229F4690007CB9EB /* SCNNode.swift */; };
+		D2BD6BF022A1E9C6007CB9EB /* ScoreNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BD6BEF22A1E9C6007CB9EB /* ScoreNode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		D2BD6BE7229F2CC9007CB9EB /* GameModes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModes.swift; sourceTree = "<group>"; };
 		D2BD6BEA229F37E0007CB9EB /* CollisionCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollisionCategory.swift; sourceTree = "<group>"; };
 		D2BD6BED229F4690007CB9EB /* SCNNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCNNode.swift; sourceTree = "<group>"; };
+		D2BD6BEF22A1E9C6007CB9EB /* ScoreNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreNode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 				D2BD6BE7229F2CC9007CB9EB /* GameModes.swift */,
 				D2BD6BE1229F2806007CB9EB /* Basketball.swift */,
 				D2BD6BE3229F2B7F007CB9EB /* Hoop.swift */,
+				D2BD6BEF22A1E9C6007CB9EB /* ScoreNode.swift */,
 				C49FF9F1229B48F6008A6AA3 /* Main.storyboard */,
 				C4615B31229B5BDB00789625 /* CustomButtons.swift */,
 				C49FF9F4229B48F7008A6AA3 /* Assets.xcassets */,
@@ -176,6 +179,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2BD6BF022A1E9C6007CB9EB /* ScoreNode.swift in Sources */,
 				D2BD6BE2229F2806007CB9EB /* Basketball.swift in Sources */,
 				C49FF9F0229B48F6008A6AA3 /* ViewController.swift in Sources */,
 				C4615B32229B5BDB00789625 /* CustomButtons.swift in Sources */,

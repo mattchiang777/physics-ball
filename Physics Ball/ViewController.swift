@@ -157,29 +157,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
         if (contact.nodeA.physicsBody?.contactTestBitMask == contact.nodeB.physicsBody?.categoryBitMask || contact.nodeB.physicsBody?.contactTestBitMask == contact.nodeA.physicsBody?.categoryBitMask) {
             
-            if (contact.nodeB.name == "ball") {
-                (contact.nodeB.parent as! Basketball).didEnterHoop(atPosition: contact.contactPoint) // why contact.nodeB.parent and not contact.nodeB?
-            }
-            
-//            print(contact.nodeA.name, contact.nodeB.name)
-//            score += 1
-//            print(score)
-        }
-        
-        // print(contact.nodeA.physicsBody?.categoryBitMask, contact.nodeB.physicsBody?.categoryBitMask)
-    }
-    
-    func physicsWorld(_ world: SCNPhysicsWorld, didEnd contact: SCNPhysicsContact) {
-        if (contact.nodeA.physicsBody?.contactTestBitMask == contact.nodeB.physicsBody?.categoryBitMask || contact.nodeB.physicsBody?.contactTestBitMask == contact.nodeA.physicsBody?.categoryBitMask) {
-            
-            if (contact.nodeB.name == "ball") {
-//                let scoreNode = backboard.childNode(withName: "scoreNode", recursively: true)
-//                let scoreNodeHeight = (scoreNode?.boundingBox.max.y)! - (scoreNode?.boundingBox.min.y)!
-//                guard let scale = scoreNode?.physicsBody?.physicsShape?.options?[SCNPhysicsShape.Option.scale] else {
-//                    return
-//                }
-//                print()
-                (contact.nodeB.parent as! Basketball).didExitHoop(atPosition: contact.contactPoint, withDifferenceRequirement: 0.1)
+            if (contact.nodeA.name == "ball" && contact.nodeB is ScoreNode) {
+                (contact.nodeA.parent as! Basketball).didHitScoreNode(node: contact.nodeB as! ScoreNode)
+            } else if (contact.nodeA is ScoreNode && contact.nodeB.name == "ball") {
+                (contact.nodeB.parent as! Basketball).didHitScoreNode(node: contact.nodeA as! ScoreNode)
             }
         }
     }
