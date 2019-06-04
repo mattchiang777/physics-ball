@@ -32,7 +32,7 @@ class Hoop: SCNNode {
         let size = SCNVector3(x: backboardNodeSize.max.x - backboardNodeSize.min.x, y: backboardNodeSize.max.y - backboardNodeSize.min.y, z: backboardNodeSize.max.z - backboardNodeSize.min.z)
         let scale = 1.828 / size.z
         
-        backboardNode.position = SCNVector3(x: 0, y: 1, z: -0.2)
+        backboardNode.position = SCNVector3(x: 0, y: 0.5, z: -3)
         backboardNode.scale = SCNVector3(scale, scale, scale)
         
         // Physics

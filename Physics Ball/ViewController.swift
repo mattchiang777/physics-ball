@@ -12,20 +12,24 @@ import ARKit
 
 
 
-class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDelegate, BasketballDelegate {
+class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDelegate, BasketballDelegate, ARSessionDelegate {
     
 
     @IBOutlet var sceneView: ARSCNView!
     @IBOutlet weak var addHoopBtn: UIButton!
+    @IBOutlet weak var scoreLabel: UILabel!
     
     var backboard: SCNNode!
     var score: Int = 0
+    var currentBasketballNode: Basketball!
+    weak var delegate: ARSessionDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Set the view's delegate
         sceneView.delegate = self
+        sceneView.session.delegate = self
         
         // Show statistics such as fps and timing information
 //        sceneView.showsStatistics = true
@@ -47,10 +51,36 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         
         sceneView.addGestureRecognizer(tap)
+        
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
+        
+        sceneView.addGestureRecognizer(longPress)
     }
     
     @objc func handleTap(gestureRecognizer: UIGestureRecognizer) {
         // scene view to be accessed
+        // access the POV of the scene view aka the center camera point
+//        guard let sceneView = gestureRecognizer.view as? ARSCNView else {
+//            return
+//        }
+//
+//        guard let centerPoint = sceneView.pointOfView else {
+//            return
+//        }
+//
+//        // transform matrix (contains orientation and location of the camera to create the position of the camera to place the ball)
+//        let cameraTransform = centerPoint.transform
+//
+//        let cameraLocation = SCNVector3(x: cameraTransform.m41, y: cameraTransform.m42, z: cameraTransform.m43)
+//        let cameraOrientation = SCNVector3(x: -cameraTransform.m31, y: -cameraTransform.m32, z: -cameraTransform.m33)
+//        let cameraPosition = SCNVector3Make(cameraLocation.x + cameraOrientation.x, cameraLocation.y + cameraOrientation.y, cameraLocation.z + cameraOrientation.z)
+//
+//        let basketballNode = self.createBasketball(withPosition: cameraPosition, andOrientation: cameraOrientation)
+//
+//        sceneView.scene.rootNode.addChildNode(basketballNode)
+    }
+    
+    @objc func handleLongPress(gestureRecognizer: UIGestureRecognizer) {
         // access the POV of the scene view aka the center camera point
         guard let sceneView = gestureRecognizer.view as? ARSCNView else {
             return
@@ -60,20 +90,42 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             return
         }
         
+        // get the camera node and add basketball as a child
+        let cameraNode = sceneView.pointOfView
+        
         // transform matrix (contains orientation and location of the camera to create the position of the camera to place the ball)
         let cameraTransform = centerPoint.transform
         
-        let cameraLocation = SCNVector3(x: cameraTransform.m41, y: cameraTransform.m42, z: cameraTransform.m43)
         let cameraOrientation = SCNVector3(x: -cameraTransform.m31, y: -cameraTransform.m32, z: -cameraTransform.m33)
-        let cameraPosition = SCNVector3Make(cameraLocation.x + cameraOrientation.x, cameraLocation.y + cameraOrientation.y, cameraLocation.z + cameraOrientation.z)
         
-        let basketballNode = self.createBasketball(withPosition: cameraPosition, andOrientation: cameraOrientation)
         
-        sceneView.scene.rootNode.addChildNode(basketballNode)
+        if (gestureRecognizer.state == UIGestureRecognizer.State.began) {
+
+            print("long press began")
+            
+            self.currentBasketballNode = self.createBasketball(withPosition: SCNVector3(0, 0, 0), andOrientation: cameraOrientation)
+            cameraNode?.addChildNode(self.currentBasketballNode)
+            
+        }
+        
+        else if (gestureRecognizer.state == UIGestureRecognizer.State.ended) {
+            print("long press ended")
+            let forceVector:Float = 6
+            
+            let ballNode = self.currentBasketballNode.childNode(withName: "ball", recursively: true)
+            
+            ballNode?.physicsBody?.isAffectedByGravity = true
+            ballNode?.physicsBody?.applyForce(SCNVector3(x: (ballNode?.position.x)! * forceVector, y: (ballNode?.position.y)! * forceVector, z: (ballNode?.position.z)! * forceVector), asImpulse: true)
+            
+            self.currentBasketballNode = nil
+        }
+        
     }
     
+// Add elements
+    
     func createBasketball(withPosition position: SCNVector3, andOrientation orientation: SCNVector3) -> Basketball{
-        let baskeball = Basketball(position: position, orientation: orientation, enterScorePosition: SCNVector3(0, 0, 0))
+        let baskeball = Basketball(position: position, orientation: orientation)
         baskeball.delegate = self
         
         return baskeball
@@ -114,6 +166,19 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         return node
     }
 */
+    
+    func session(_ session: ARSession, didUpdate frame: ARFrame) {
+        if ((self.currentBasketballNode) != nil) {
+        
+            var translation = matrix_identity_float4x4
+            translation.columns.3.z = -1
+            let cameraTransform = frame.camera.transform
+            
+            let ballNode = self.currentBasketballNode.childNode(withName: "ball", recursively: true)
+            ballNode?.simdTransform = matrix_multiply(cameraTransform, translation)
+
+        }
+    }
     
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user
@@ -167,6 +232,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     
     func didScore(withBall ball: Basketball) {
         print("SCORE!!!!!")
+        self.score += 1
+        scoreLabel.text = String(self.score)
     }
     
     

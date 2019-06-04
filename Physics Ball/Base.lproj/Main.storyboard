@@ -79,6 +79,13 @@
                                     <action selector="addHoop:" destination="BV1-FR-VrT" eventType="touchUpInside" id="WC8-ya-JNH"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i1r-zc-Vnf">
+                                <rect key="frame" x="153" y="44" width="69" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -94,6 +101,7 @@
                     <connections>
                         <outlet property="addHoopBtn" destination="F13-0Z-482" id="RVJ-3U-QWD"/>
                         <outlet property="sceneView" destination="EFc-Mm-3XU" id="TUJ-pP-Bgm"/>
+                        <outlet property="scoreLabel" destination="i1r-zc-Vnf" id="994-lW-5Y9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
